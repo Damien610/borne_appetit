@@ -20,13 +20,23 @@ output "s3_bucket_name" {
 }
 
 output "dynamodb_table_name" {
-  description = "Nom de la table DynamoDB"
+  description = "Nom de la table DynamoDB produits"
   value       = aws_dynamodb_table.borne_appetit.name
 }
 
 output "dynamodb_table_arn" {
-  description = "ARN de la table DynamoDB"
+  description = "ARN de la table DynamoDB produits"
   value       = aws_dynamodb_table.borne_appetit.arn
+}
+
+output "dynamodb_config_table_name" {
+  description = "Nom de la table DynamoDB config"
+  value       = aws_dynamodb_table.config.name
+}
+
+output "dynamodb_config_table_arn" {
+  description = "ARN de la table DynamoDB config"
+  value       = aws_dynamodb_table.config.arn
 }
 
 output "aws_region" {
