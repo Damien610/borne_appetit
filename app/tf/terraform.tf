@@ -8,13 +8,14 @@ terraform {
     }
   }
 
-  backend "s3" {
-    bucket         = "borne-appetit-terraform-state"
-    key            = "terraform.tfstate"
-    region         = "eu-west-1"
-    dynamodb_table = "borne-appetit-terraform-locks"
-    encrypt        = true
-  }
+  # Backend S3 - Temporairement commenté
+  # backend "s3" {
+  #   bucket         = "borne-appetit-terraform-state"
+  #   key            = "terraform.tfstate"
+  #   region         = "eu-west-1"
+  #   dynamodb_table = "borne-appetit-terraform-locks"
+  #   encrypt        = true
+  # }
 }
 
 provider "aws" {
