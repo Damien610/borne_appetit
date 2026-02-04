@@ -45,6 +45,11 @@ resource "aws_dynamodb_table" "config" {
     type = "S"
   }
 
+  attribute {
+    name = "SK"
+    type = "S"
+  }
+
   lifecycle {
     prevent_destroy = true
   }
