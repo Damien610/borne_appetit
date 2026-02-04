@@ -17,13 +17,6 @@ resource "aws_dynamodb_table" "borne_appetit" {
     type = "S"
   }
 
-  global_secondary_index {
-    name            = "TypeIndex"
-    hash_key        = "Type"
-    range_key       = "SK"
-    projection_type = "ALL"
-  }
-
   lifecycle {
     prevent_destroy = true
   }
