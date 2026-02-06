@@ -71,7 +71,7 @@ resource "aws_apigatewayv2_integration" "restaurant_config" {
 
 resource "aws_apigatewayv2_route" "restaurant_config" {
   api_id    = aws_apigatewayv2_api.api.id
-  route_key = "GET /{uri}/config"
+  route_key = "GET /restaurant/{uri}/config"
   target    = "integrations/${aws_apigatewayv2_integration.restaurant_config.id}"
 }
 

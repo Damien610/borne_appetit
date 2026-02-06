@@ -48,9 +48,10 @@ def handler(event, context):
                     'uri_name': restaurant.get('uri_name', ''),
                     'name': restaurant.get('name', ''),
                     'logo': restaurant.get('logo', ''),
+                    'favicon': restaurant.get('favicon', ''),
                     'uuid': restaurant_uuid
                 },
-                'styles': [{'uuid': s['SK'].split('#')[1], 'name': s.get('name', ''), 'value': s.get('style_value', '')} for s in styles_response.get('Items', [])]
+                'styles': [{'uuid': s['SK'].split('#')[1], 'name': s.get('name', ''), 'style_value': s.get('style_value', '')} for s in styles_response.get('Items', [])]
             })
         }
     except Exception as e:
