@@ -30,14 +30,20 @@ def handler(event, context):
             ExpressionAttributeValues={':pk': f'RESTAURANT#{restaurant_uuid}', ':sk': 'STYLE#'}
         )
 
+        cloudfront_url = os.environ['CLOUDFRONT_URL']
+        uri_name = restaurant.get('uri_name', '')
+        logo = restaurant.get('logo', '')
+        logo_url = f"{cloudfront_url}/{uri_name}/images/{logo}" if logo else ''
+        favicon_url = f"{cloudfront_url}/{uri_name}/images/{restaurant.get('favicon', '')}" if restaurant.get('favicon', '') else ''
+
         return {
             'statusCode': 200,
             'body': json.dumps({
                 'restaurant': {
                     'uri_name': restaurant.get('uri_name', ''),
                     'name': restaurant.get('name', ''),
-                    'logo': restaurant.get('logo', ''),
-                    'favicon': restaurant.get('favicon', ''),
+                    'logo': logo_url,
+                    'favicon': favicon_url,
                     'uuid': restaurant_uuid
                 },
                 'styles': [{'uuid': s['SK'].split('#')[1], 'name': s.get('name', ''), 'style_value': s.get('style_value', '')} for s in styles_response.get('Items', [])]
