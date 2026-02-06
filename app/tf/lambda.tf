@@ -36,3 +36,25 @@ data "archive_file" "terminal_config" {
   source_file = "${path.module}/../src/lambda/terminal_config.py"
   output_path = "${path.module}/../src/lambda/terminal_config.zip"
 }
+
+resource "aws_lambda_function" "restaurant_config" {
+  filename      = "${path.module}/../src/lambda/restaurant_config.zip"
+  function_name = "borne-appetit-restaurant-config"
+  role          = aws_iam_role.lambda.arn
+  handler       = "restaurant_config.handler"
+  runtime       = "python3.11"
+  
+  environment {
+    variables = {
+      CONFIG_TABLE_NAME = aws_dynamodb_table.config.name
+    }
+  }
+  
+  source_code_hash = data.archive_file.restaurant_config.output_base64sha256
+}
+
+data "archive_file" "restaurant_config" {
+  type        = "zip"
+  source_file = "${path.module}/../src/lambda/restaurant_config.py"
+  output_path = "${path.module}/../src/lambda/restaurant_config.zip"
+}

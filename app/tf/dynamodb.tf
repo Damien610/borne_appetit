@@ -43,9 +43,20 @@ resource "aws_dynamodb_table" "config" {
     type = "S"
   }
 
+  attribute {
+    name = "uri_name"
+    type = "S"
+  }
+
   global_secondary_index {
     name            = "SK-index"
     hash_key        = "SK"
+    projection_type = "ALL"
+  }
+
+  global_secondary_index {
+    name            = "uri_name-index"
+    hash_key        = "uri_name"
     projection_type = "ALL"
   }
 
