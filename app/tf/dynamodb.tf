@@ -43,6 +43,12 @@ resource "aws_dynamodb_table" "config" {
     type = "S"
   }
 
+  global_secondary_index {
+    name            = "SK-index"
+    hash_key        = "SK"
+    projection_type = "ALL"
+  }
+
   lifecycle {
     prevent_destroy = true
   }
