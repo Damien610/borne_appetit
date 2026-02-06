@@ -38,11 +38,7 @@ def handler(event, context):
             KeyConditionExpression='PK = :pk AND begins_with(SK, :sk)',
             ExpressionAttributeValues={':pk': f'RESTAURANT#{restaurant_uuid}', ':sk': 'STYLE#'}
         )
-        
-        filtered_styles = [
-            s for s in styles_response.get('Items', [])
-            if s.get('terminal_uuid') == terminal_uuid or not s.get('terminal_uuid')
-        ]
+
         
         return {
             'statusCode': 200,
@@ -54,7 +50,7 @@ def handler(event, context):
                     'logo': restaurant.get('logo', ''),
                     'uuid': restaurant_uuid
                 },
-                'styles': [{'uuid': s['SK'].split('#')[1], 'name': s.get('name', ''), 'value': s.get('style_value', '')} for s in filtered_styles]
+                'styles': [{'uuid': s['SK'].split('#')[1], 'name': s.get('name', ''), 'value': s.get('style_value', '')} for s in styles_response.get('Items', [])]
             })
         }
     except Exception as e:
