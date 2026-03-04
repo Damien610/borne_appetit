@@ -7,6 +7,8 @@ class Restaurant:
     name: str
     uri_name: str
     logo: Optional[str] = None
+    favicon: Optional[str] = None
+    welcome_image: Optional[str] = None
     primary_color: Optional[str] = None
     secondary_color: Optional[str] = None
 

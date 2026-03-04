@@ -18,6 +18,8 @@ class DynamoDBRestaurantRepository(RestaurantRepository):
             name=item.get('name'),
             uri_name=item.get('uri_name'),
             logo=item.get('logo'),
+            favicon=item.get('favicon'),
+            welcome_image=item.get('welcome_image'),
             primary_color=item.get('primary_color'),
             secondary_color=item.get('secondary_color')
         )
@@ -37,6 +39,8 @@ class DynamoDBRestaurantRepository(RestaurantRepository):
             name=item.get('name'),
             uri_name=item.get('uri_name'),
             logo=item.get('logo'),
+            favicon=item.get('favicon'),
+            welcome_image=item.get('welcome_image'),
             primary_color=item.get('primary_color'),
             secondary_color=item.get('secondary_color')
         )

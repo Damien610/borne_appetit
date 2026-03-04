@@ -13,6 +13,8 @@ class GetRestaurantConfigUseCase:
             'name': restaurant.name,
             'uri_name': restaurant.uri_name,
             'logo': restaurant.logo,
+            'favicon': restaurant.favicon,
+            'welcome_image': restaurant.welcome_image,
             'primary_color': restaurant.primary_color,
             'secondary_color': restaurant.secondary_color
         }
@@ -41,6 +43,8 @@ class GetTerminalConfigUseCase:
                 'uuid': restaurant.uuid,
                 'name': restaurant.name,
                 'logo': restaurant.logo,
+                'favicon': restaurant.favicon,
+                'welcome_image': restaurant.welcome_image,
                 'primary_color': restaurant.primary_color,
                 'secondary_color': restaurant.secondary_color
             }
