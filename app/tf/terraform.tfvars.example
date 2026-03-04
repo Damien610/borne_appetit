@@ -1,0 +1,12 @@
+# Configuration Terraform - Copier ce fichier en terraform.tfvars et remplir les valeurs
+
+aws_region = "eu-west-1"
+
+# Secret JWT - Générer avec: openssl rand -base64 32
+jwt_secret_key = "CHANGE-ME-GENERATE-WITH-openssl-rand-base64-32"
+
+bucket_name = "borne-appetit-assets"
+
+# Optionnel: domaine personnalisé
+# domain_name = "assets.appetit.com"
+# acm_certificate_arn = "arn:aws:acm:us-east-1:..."

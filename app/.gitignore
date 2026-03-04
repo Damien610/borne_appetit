@@ -1,0 +1,40 @@
+# Terraform
+tf/.terraform/
+tf/.terraform.lock.hcl
+tf/terraform.tfstate
+tf/terraform.tfstate.backup
+tf/terraform.tfvars
+tf/*.tfplan
+
+# Lambda packages
+src/lambda/**/*.zip
+src/lambda/**/package/
+src/lambda/**/__pycache__/
+src/lambda/**/PyJWT*
+src/lambda/**/boto3*
+src/lambda/**/botocore*
+
+# Python
+*.pyc
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+*.log
+
+# Secrets
+.env
+*.pem
+*.key
+/.kiro/

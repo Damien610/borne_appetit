@@ -1,4 +1,4 @@
-# Configuration des rôles et politiques IAM
+# IAM Role pour Lambda
 resource "aws_iam_role" "lambda" {
   name = "borne-appetit-lambda-role"
 
@@ -27,11 +27,16 @@ resource "aws_iam_role_policy" "lambda_dynamodb" {
     Version = "2012-10-17"
     Statement = [{
       Effect = "Allow"
-      Action = ["dynamodb:GetItem", "dynamodb:Query"]
-      Resource = [
-        aws_dynamodb_table.config.arn,
-        "${aws_dynamodb_table.config.arn}/index/*"
+      Action = [
+        "dynamodb:GetItem",
+        "dynamodb:Query",
+        "dynamodb:Scan"
       ]
+      Resource = module.database.config_table_arn
     }]
   })
+}
+
+output "lambda_role_arn" {
+  value = aws_iam_role.lambda.arn
 }
