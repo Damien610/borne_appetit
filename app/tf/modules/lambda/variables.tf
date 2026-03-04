@@ -7,3 +7,41 @@ variable "config_table_name" {
   description = "Nom de la table DynamoDB de configuration"
   type        = string
 }
+
+variable "smtp_user" {
+  description = "Email SMTP Google"
+  type        = string
+  sensitive   = true
+}
+
+variable "smtp_password" {
+  description = "Mot de passe SMTP Google"
+  type        = string
+  sensitive   = true
+}
+
+variable "customers_table_name" {
+  description = "Nom de la table DynamoDB customers"
+  type        = string
+}
+
+variable "jwt_secret" {
+  description = "Secret pour signer les JWT"
+  type        = string
+  sensitive   = true
+}
+
+variable "project_name" {
+  description = "Nom du projet"
+  type        = string
+}
+
+variable "lambda_zip_path" {
+  description = "Chemin vers le zip Lambda"
+  type        = string
+}
+
+variable "api_gateway_execution_arn" {
+  description = "ARN d'exécution de l'API Gateway"
+  type        = string
+}

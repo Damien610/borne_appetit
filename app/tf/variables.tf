@@ -21,3 +21,33 @@ variable "acm_certificate_arn" {
   type        = string
   default     = ""
 }
+
+variable "smtp_user" {
+  description = "Email SMTP Google"
+  type        = string
+  sensitive   = true
+}
+
+variable "smtp_password" {
+  description = "Mot de passe SMTP Google"
+  type        = string
+  sensitive   = true
+}
+
+variable "project_name" {
+  description = "Nom du projet"
+  type        = string
+  default     = "borne-appetit"
+}
+
+variable "lambda_zip_path" {
+  description = "Chemin vers le zip Lambda"
+  type        = string
+  default     = "../lambda.zip"
+}
+
+variable "jwt_secret" {
+  description = "Secret pour signer les JWT"
+  type        = string
+  sensitive   = true
+}
