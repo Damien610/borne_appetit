@@ -4,6 +4,8 @@ import os
 from application.send_loyalty_card_use_case import SendLoyaltyCardUseCase
 from infrastructure.smtp_email_service import SMTPEmailService
 from infrastructure.dynamodb_customer_repository import DynamoDBCustomerRepository
+from infrastructure.dynamodb_repositories import DynamoDBRestaurantRepository
+from infrastructure.google_wallet_service import GoogleWalletPassService
 
 
 def lambda_handler(event, context):
@@ -35,7 +37,6 @@ def lambda_handler(event, context):
         try:
             payload = jwt.decode(token, jwt_secret, algorithms=['HS256'])
             restaurant_id = payload.get('restaurant_id')
-            terminal_id = payload.get('terminal_id')
         except jwt.ExpiredSignatureError:
             return {
                 'statusCode': 401,
@@ -68,9 +69,20 @@ def lambda_handler(event, context):
             }
         
         # Injection de dépendances
+        config_table = os.environ.get('CONFIG_TABLE_NAME')
+        customers_table = os.environ.get('CUSTOMERS_TABLE_NAME')
+        
         email_service = SMTPEmailService()
-        customer_repository = DynamoDBCustomerRepository()
-        use_case = SendLoyaltyCardUseCase(email_service, customer_repository)
+        customer_repository = DynamoDBCustomerRepository(customers_table)
+        restaurant_repository = DynamoDBRestaurantRepository(config_table)
+        wallet_service = GoogleWalletPassService()
+        
+        use_case = SendLoyaltyCardUseCase(
+            email_service,
+            customer_repository,
+            restaurant_repository,
+            wallet_service
+        )
         
         # Exécution
         result = use_case.execute(restaurant_id, recipient_email)
@@ -82,7 +94,8 @@ def lambda_handler(event, context):
                 'body': json.dumps({
                     'message': 'Email envoyé avec succès',
                     'customer_id': result['customer_id'],
-                    'loyalty_code': result['loyalty_code']
+                    'loyalty_code': result['loyalty_code'],
+                    'wallet_url': result['wallet_url']
                 })
             }
         else:

@@ -15,18 +15,34 @@ class SMTPEmailService(EmailService):
         if not self.smtp_user or not self.smtp_password:
             raise ValueError("Configuration SMTP manquante")
     
-    def send_loyalty_card(self, recipient_email: str) -> bool:
-        """Envoie la carte de fidélité via SMTP Google"""
+    def send_loyalty_card(self, recipient_email: str, wallet_url: str, restaurant_config: dict) -> bool:
+        """Envoie le lien de la carte de fidélité Google Wallet"""
         try:
-            msg = MIMEMultipart()
+            name = restaurant_config.get('name', 'Restaurant')
+            logo = restaurant_config.get('logo', '')
+            
+            html = f"""
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+<body style="font-family: Arial; text-align: center; padding: 20px;">
+    <img src="{logo}" alt="{name}" style="max-width: 200px; margin-bottom: 20px;">
+    <h1>Votre carte de fidélité {name}</h1>
+    <p>Ajoutez votre carte de fidélité à Google Wallet :</p>
+    <a href="{wallet_url}" style="display: inline-block; background: #4285f4; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; margin: 20px 0;">Ajouter à Google Wallet</a>
+</body>
+</html>
+"""
+            
+            msg = MIMEMultipart('alternative')
             msg['From'] = self.smtp_user
             msg['To'] = recipient_email
-            msg['Subject'] = 'Votre carte de fidélité Borne Appétit'
+            msg['Subject'] = f"Votre carte de fidélité {name}"
             
-            body_text = "Voici votre carte de fidélité."
-            msg.attach(MIMEText(body_text, 'plain'))
+            msg.attach(MIMEText(html, 'html'))
             
-            with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+            with smtplib.SMTP('smtp.gmail.com', 587) as server:
+                server.starttls()
                 server.login(self.smtp_user, self.smtp_password)
                 server.send_message(msg)
             
