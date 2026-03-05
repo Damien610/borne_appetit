@@ -13,3 +13,11 @@ output "customers_table_name" {
 output "customers_table_arn" {
   value = aws_dynamodb_table.customers.arn
 }
+
+output "products_table_name" {
+  value = aws_dynamodb_table.products.name
+}
+
+output "products_table_arn" {
+  value = aws_dynamodb_table.products.arn
+}
