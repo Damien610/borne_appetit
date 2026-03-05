@@ -57,3 +57,13 @@ variable "refresh_token_invoke_arn" {
   description = "ARN d'invocation de la fonction Lambda refresh_token"
   type        = string
 }
+
+variable "customer_lookup_function_name" {
+  description = "Nom de la fonction Lambda customer_lookup"
+  type        = string
+}
+
+variable "customer_lookup_invoke_arn" {
+  description = "ARN d'invocation de la fonction Lambda customer_lookup"
+  type        = string
+}
