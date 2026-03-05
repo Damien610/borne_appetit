@@ -18,6 +18,16 @@ output "refresh_token_function_name" {
   value       = aws_lambda_function.refresh_token.function_name
 }
 
+output "products_lookup_invoke_arn" {
+  description = "ARN d'invocation de la Lambda products-lookup"
+  value       = aws_lambda_function.products_lookup.invoke_arn
+}
+
+output "products_lookup_function_name" {
+  description = "Nom de la fonction Lambda custoproductsmer-lookup"
+  value       = aws_lambda_function.products_lookup.function_name
+}
+
 output "customer_lookup_invoke_arn" {
   description = "ARN d'invocation de la Lambda customer-lookup"
   value       = aws_lambda_function.customer_lookup.invoke_arn

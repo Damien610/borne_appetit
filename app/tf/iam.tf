@@ -50,6 +50,18 @@ resource "aws_iam_role_policy" "lambda_dynamodb" {
           module.database.customers_table_arn,
           "${module.database.customers_table_arn}/index/*"
         ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "dynamodb:GetItem",
+          "dynamodb:Query",
+          "dynamodb:Scan"
+        ]
+        Resource = [
+          module.database.products_table_arn,
+          "${module.database.products_table_arn}/index/*"
+        ]
       }
     ]
   })
