@@ -67,3 +67,23 @@ variable "customer_lookup_invoke_arn" {
   description = "ARN d'invocation de la fonction Lambda customer_lookup"
   type        = string
 }
+
+variable "create_wallet_class_function_name" {
+  description = "Nom de la fonction Lambda create_wallet_class"
+  type        = string
+}
+
+variable "create_wallet_class_invoke_arn" {
+  description = "ARN d'invocation de la fonction Lambda create_wallet_class"
+  type        = string
+}
+
+variable "update_loyalty_points_function_name" {
+  description = "Nom de la fonction Lambda update_loyalty_points"
+  type        = string
+}
+
+variable "update_loyalty_points_invoke_arn" {
+  description = "ARN d'invocation de la fonction Lambda update_loyalty_points"
+  type        = string
+}

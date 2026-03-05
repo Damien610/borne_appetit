@@ -27,3 +27,23 @@ output "customer_lookup_function_name" {
   description = "Nom de la fonction Lambda customer-lookup"
   value       = aws_lambda_function.customer_lookup.function_name
 }
+
+output "create_wallet_class_invoke_arn" {
+  description = "ARN d'invocation de la Lambda create-wallet-class"
+  value       = aws_lambda_function.create_wallet_class.invoke_arn
+}
+
+output "create_wallet_class_function_name" {
+  description = "Nom de la fonction Lambda create-wallet-class"
+  value       = aws_lambda_function.create_wallet_class.function_name
+}
+
+output "update_loyalty_points_invoke_arn" {
+  description = "ARN d'invocation de la Lambda update-loyalty-points"
+  value       = aws_lambda_function.update_loyalty_points.invoke_arn
+}
+
+output "update_loyalty_points_function_name" {
+  description = "Nom de la fonction Lambda update-loyalty-points"
+  value       = aws_lambda_function.update_loyalty_points.function_name
+}

@@ -15,6 +15,8 @@ module "lambda" {
   smtp_user                 = var.smtp_user
   smtp_password             = var.smtp_password
   jwt_secret                = var.jwt_secret
+  google_wallet_issuer_id   = var.google_wallet_issuer_id
+  google_wallet_credentials = var.google_wallet_credentials
   project_name              = var.project_name
   lambda_zip_path           = var.lambda_zip_path
   api_gateway_execution_arn = module.api_gateway.api_execution_arn
@@ -39,6 +41,10 @@ module "api_gateway" {
   refresh_token_invoke_arn          = module.lambda.refresh_token_invoke_arn
   customer_lookup_function_name     = module.lambda.customer_lookup_function_name
   customer_lookup_invoke_arn        = module.lambda.customer_lookup_invoke_arn
+  create_wallet_class_function_name = module.lambda.create_wallet_class_function_name
+  create_wallet_class_invoke_arn    = module.lambda.create_wallet_class_invoke_arn
+  update_loyalty_points_function_name = module.lambda.update_loyalty_points_function_name
+  update_loyalty_points_invoke_arn    = module.lambda.update_loyalty_points_invoke_arn
 }
 
 # Module Storage
