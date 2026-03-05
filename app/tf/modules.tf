@@ -37,6 +37,8 @@ module "api_gateway" {
   send_loyalty_card_invoke_arn      = module.lambda.send_loyalty_card_invoke_arn
   refresh_token_function_name       = module.lambda.refresh_token_function_name
   refresh_token_invoke_arn          = module.lambda.refresh_token_invoke_arn
+  customer_lookup_function_name     = module.lambda.customer_lookup_function_name
+  customer_lookup_invoke_arn        = module.lambda.customer_lookup_invoke_arn
 }
 
 # Module Storage
