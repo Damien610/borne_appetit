@@ -51,3 +51,15 @@ variable "jwt_secret" {
   type        = string
   sensitive   = true
 }
+
+variable "google_wallet_issuer_id" {
+  description = "Google Wallet Issuer ID"
+  type        = string
+  sensitive   = true
+}
+
+variable "google_wallet_credentials" {
+  description = "Google Wallet Service Account JSON"
+  type        = string
+  sensitive   = true
+}
