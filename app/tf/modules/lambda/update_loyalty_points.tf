@@ -1,9 +1,15 @@
+data "archive_file" "update_loyalty_points" {
+  type        = "zip"
+  source_dir  = "${path.module}/../../../src"
+  output_path = "${path.module}/../../../src/lambda/update_loyalty_points.zip"
+}
+
 resource "aws_lambda_function" "update_loyalty_points" {
-  filename         = var.lambda_zip_path
+  filename         = data.archive_file.update_loyalty_points.output_path
   function_name    = "${var.project_name}-update-loyalty-points"
   role            = var.lambda_role_arn
   handler         = "infrastructure.update_loyalty_points_handler.lambda_handler"
-  source_code_hash = filebase64sha256(var.lambda_zip_path)
+  source_code_hash = data.archive_file.update_loyalty_points.output_base64sha256
   runtime         = "python3.11"
   timeout         = 30
 

@@ -18,7 +18,6 @@ module "lambda" {
   google_wallet_issuer_id   = var.google_wallet_issuer_id
   google_wallet_credentials = var.google_wallet_credentials
   project_name              = var.project_name
-  lambda_zip_path           = var.lambda_zip_path
   api_gateway_execution_arn = module.api_gateway.api_execution_arn
 }
 
