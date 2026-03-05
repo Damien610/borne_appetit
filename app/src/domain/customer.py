@@ -10,5 +10,6 @@ class Customer:
     customer_id: str
     email: str
     loyalty_code: str
+    name: Optional[str] = None
     loyalty_points: int = 0
     order_date: Optional[datetime] = None

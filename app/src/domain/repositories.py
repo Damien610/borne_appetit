@@ -23,7 +23,7 @@ class CustomerRepository(ABC):
         pass
     
     @abstractmethod
-    def get_by_loyalty_code(self, loyalty_code: str) -> Optional[Customer]:
+    def get_by_loyalty_code(self, loyalty_code: str, restaurant_id: str = None) -> Optional[Customer]:
         pass
     
     @abstractmethod
