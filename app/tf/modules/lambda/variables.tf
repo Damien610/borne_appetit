@@ -48,11 +48,6 @@ variable "project_name" {
   type        = string
 }
 
-variable "lambda_zip_path" {
-  description = "Chemin vers le zip Lambda"
-  type        = string
-}
-
 variable "api_gateway_execution_arn" {
   description = "ARN d'exécution de l'API Gateway"
   type        = string

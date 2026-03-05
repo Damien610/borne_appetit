@@ -1,9 +1,15 @@
+data "archive_file" "send_loyalty_card" {
+  type        = "zip"
+  source_dir  = "${path.module}/../../../src"
+  output_path = "${path.module}/../../../src/lambda/send_loyalty_card.zip"
+}
+
 resource "aws_lambda_function" "send_loyalty_card" {
-  filename         = var.lambda_zip_path
+  filename         = data.archive_file.send_loyalty_card.output_path
   function_name    = "${var.project_name}-send-loyalty-card"
   role            = var.lambda_role_arn
   handler         = "infrastructure.send_loyalty_card_handler.lambda_handler"
-  source_code_hash = filebase64sha256(var.lambda_zip_path)
+  source_code_hash = data.archive_file.send_loyalty_card.output_base64sha256
   runtime         = "python3.11"
   timeout         = 30
 

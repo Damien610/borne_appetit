@@ -40,12 +40,6 @@ variable "project_name" {
   default     = "borne-appetit"
 }
 
-variable "lambda_zip_path" {
-  description = "Chemin vers le zip Lambda"
-  type        = string
-  default     = "../lambda.zip"
-}
-
 variable "jwt_secret" {
   description = "Secret pour signer les JWT"
   type        = string

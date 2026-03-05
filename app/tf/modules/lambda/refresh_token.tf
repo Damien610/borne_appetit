@@ -1,9 +1,15 @@
+data "archive_file" "refresh_token" {
+  type        = "zip"
+  source_dir  = "${path.module}/../../../src"
+  output_path = "${path.module}/../../../src/lambda/refresh_token.zip"
+}
+
 resource "aws_lambda_function" "refresh_token" {
-  filename         = var.lambda_zip_path
+  filename         = data.archive_file.refresh_token.output_path
   function_name    = "${var.project_name}-refresh-token"
   role            = var.lambda_role_arn
   handler         = "infrastructure.refresh_token_handler.lambda_handler"
-  source_code_hash = filebase64sha256(var.lambda_zip_path)
+  source_code_hash = data.archive_file.refresh_token.output_base64sha256
   runtime         = "python3.11"
   timeout         = 10
 

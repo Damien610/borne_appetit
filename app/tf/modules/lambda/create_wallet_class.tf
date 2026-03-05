@@ -1,9 +1,15 @@
+data "archive_file" "create_wallet_class" {
+  type        = "zip"
+  source_dir  = "${path.module}/../../../src"
+  output_path = "${path.module}/../../../src/lambda/create_wallet_class.zip"
+}
+
 resource "aws_lambda_function" "create_wallet_class" {
-  filename         = var.lambda_zip_path
+  filename         = data.archive_file.create_wallet_class.output_path
   function_name    = "${var.project_name}-create-wallet-class"
   role            = var.lambda_role_arn
   handler         = "infrastructure.create_wallet_class_handler.lambda_handler"
-  source_code_hash = filebase64sha256(var.lambda_zip_path)
+  source_code_hash = data.archive_file.create_wallet_class.output_base64sha256
   runtime         = "python3.11"
   timeout         = 30
 
