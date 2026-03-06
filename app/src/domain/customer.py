@@ -12,4 +12,3 @@ class Customer:
     loyalty_code: str
     name: Optional[str] = None
     loyalty_points: int = 0
-    order_date: Optional[datetime] = None

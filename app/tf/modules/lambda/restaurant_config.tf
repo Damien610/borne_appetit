@@ -1,23 +1,34 @@
+data "archive_file" "restaurant_config" {
+  type        = "zip"
+  source_dir  = "${path.module}/../../../src/lambda/restaurant/uri/get_config"
+  output_path = "${path.module}/.terraform/lambda_zips/restaurant_config.zip"
+}
+
 resource "aws_lambda_function" "restaurant_config" {
-  filename      = "${path.module}/../../../src/lambda/restaurant_config.zip"
+  filename      = data.archive_file.restaurant_config.output_path
   function_name = "borne-appetit-restaurant-config"
   role          = var.lambda_role_arn
-  handler       = "restaurant_handler.handler"
+  handler       = "get_config.handler"
   runtime       = "python3.11"
+  timeout       = 3
+  
+  layers = [aws_lambda_layer_version.shared_layer.arn]
   
   environment {
     variables = {
       CONFIG_TABLE_NAME = var.config_table_name
     }
   }
-  
-  source_code_hash = data.archive_file.restaurant_config.output_base64sha256
+
+  source_code_hash = filebase64sha256("${path.module}/../../../src/lambda/restaurant/uri/get_config/get_config.py")
 }
 
-data "archive_file" "restaurant_config" {
-  type        = "zip"
-  source_dir  = "${path.module}/../../../src"
-  output_path = "${path.module}/../../../src/lambda/restaurant_config.zip"
+resource "aws_lambda_permission" "restaurant_config_api" {
+  statement_id  = "AllowAPIGatewayInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.restaurant_config.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${var.api_gateway_execution_arn}/*/*"
 }
 
 output "restaurant_config_function_name" {

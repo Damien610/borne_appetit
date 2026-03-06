@@ -1,4 +1,6 @@
 import boto3
+import os
+import uuid
 from typing import Optional
 from domain.entities import Restaurant, Terminal
 from domain.customer import Customer
@@ -69,9 +71,9 @@ class DynamoDBTerminalRepository(TerminalRepository):
         )
 
 class DynamoDBCustomerRepository(CustomerRepository):
-    def __init__(self, table_name: str):
+    def __init__(self):
         self.dynamodb = boto3.resource('dynamodb')
-        self.table = self.dynamodb.Table(table_name)
+        self.table = self.dynamodb.Table(os.environ.get('CUSTOMERS_TABLE_NAME'))
     
     def get_by_loyalty_code(self, loyalty_code: str, restaurant_id: str = None) -> Optional[Customer]:
         response = self.table.query(
@@ -99,7 +101,22 @@ class DynamoDBCustomerRepository(CustomerRepository):
         pass
     
     def create(self, customer: Customer) -> Customer:
-        pass
+        """Crée un nouveau client"""       
+        item = {
+            'PK': f"RESTAURANT#{customer.restaurant_id}",
+            'SK': f"CLIENT#{customer.customer_id}",
+            'name': customer.name,
+            'email': customer.email,
+            'loyalty_code': customer.loyalty_code,
+            'loyalty_points': customer.loyalty_points,
+            'restaurant_email': f"{customer.restaurant_id}#{customer.email}"
+        }
+        
+        self.table.put_item(
+                Item=item,
+                ConditionExpression='attribute_not_exists(PK) AND attribute_not_exists(SK)'
+            )
+        return customer
     
     def update(self, customer: Customer) -> Customer:
         pass

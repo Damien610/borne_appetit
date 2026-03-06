@@ -61,6 +61,7 @@ class DynamoDBCustomerRepository(CustomerRepository):
         item = {
             'PK': f"RESTAURANT#{customer.restaurant_id}",
             'SK': f"CLIENT#{customer.customer_id}",
+            'name': customer.name,
             'email': customer.email,
             'loyalty_code': customer.loyalty_code,
             'loyalty_points': customer.loyalty_points,

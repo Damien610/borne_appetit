@@ -52,3 +52,9 @@ variable "api_gateway_execution_arn" {
   description = "ARN d'exécution de l'API Gateway"
   type        = string
 }
+
+
+variable "products_table_name" {
+  description = "Nom de la table DynamoDB products"
+  type        = string
+}
