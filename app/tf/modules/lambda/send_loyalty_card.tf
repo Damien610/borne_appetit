@@ -1,6 +1,7 @@
 data "archive_file" "send_loyalty_card" {
   type        = "zip"
-  source_file = "${path.module}/../../../src/lambda/wallet/send_loyalty_card.py"
+  source_dir  = "${path.module}/../../../src/lambda/wallet"
+  excludes    = ["*.zip"]
   output_path = "${path.module}/.terraform/lambda_zips/send_loyalty_card.zip"
 }
 
@@ -26,7 +27,7 @@ resource "aws_lambda_function" "send_loyalty_card" {
     }
   }
 
-  source_code_hash = filebase64sha256("${path.module}/../../../src/lambda/wallet/send_loyalty_card.py")
+  source_code_hash = data.archive_file.send_loyalty_card.output_base64sha256
 }
 
 resource "aws_lambda_permission" "send_loyalty_card_api" {

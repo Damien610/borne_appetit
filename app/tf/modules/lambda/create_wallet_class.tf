@@ -1,6 +1,7 @@
 data "archive_file" "create_wallet_class" {
   type        = "zip"
-  source_file = "${path.module}/../../../src/lambda/wallet/post_wallet.py"
+  source_dir  = "${path.module}/../../../src/lambda/wallet"
+  excludes    = ["*.zip"]
   output_path = "${path.module}/.terraform/lambda_zips/create_wallet_class.zip"
 }
 
@@ -22,7 +23,7 @@ resource "aws_lambda_function" "create_wallet_class" {
     }
   }
 
-  source_code_hash = filebase64sha256("${path.module}/../../../src/lambda/wallet/post_wallet.py")
+  source_code_hash = data.archive_file.create_wallet_class.output_base64sha256
 }
 
 resource "aws_lambda_permission" "create_wallet_class_api" {
