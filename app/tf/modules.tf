@@ -45,8 +45,8 @@ module "api_gateway" {
   create_wallet_class_invoke_arn      = module.lambda.create_wallet_class_invoke_arn
   update_loyalty_points_function_name = module.lambda.update_loyalty_points_function_name
   update_loyalty_points_invoke_arn    = module.lambda.update_loyalty_points_invoke_arn
-  product_lookup_function_name       = module.lambda.products_lookup_function_name
-  product_lookup_invoke_arn          = module.lambda.products_lookup_invoke_arn
+  products_lookup_function_name       = module.lambda.products_lookup_function_name
+  products_lookup_invoke_arn          = module.lambda.products_lookup_invoke_arn
 }
 
 # Module Storage

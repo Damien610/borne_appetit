@@ -6,7 +6,7 @@ variable "products_table_name" {
 data "archive_file" "products_lookup" {
   type        = "zip"
   source_dir  = "${path.module}/../../../src"
-  output_path = "${path.module}/../../../src/lambda/products_lookup.zip"
+  output_path = "${path.module}/products_lookup.zip"
 }
 
 resource "aws_lambda_function" "products_lookup" {

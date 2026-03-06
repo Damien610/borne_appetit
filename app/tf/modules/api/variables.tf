@@ -88,12 +88,12 @@ variable "update_loyalty_points_invoke_arn" {
   type        = string
 }
 
-variable "product_lookup_function_name" {
+variable "products_lookup_function_name" {
   description = "Nom de la fonction Lambda customer_lookup"
   type        = string
 }
 
-variable "product_lookup_invoke_arn" {
+variable "products_lookup_invoke_arn" {
   description = "ARN d'invocation de la fonction Lambda customer_lookup"
   type        = string
 }

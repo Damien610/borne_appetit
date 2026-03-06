@@ -57,3 +57,9 @@ variable "google_wallet_credentials" {
   type        = string
   sensitive   = true
 }
+
+variable "google_wallet_service_account" {
+  description = "Google Wallet Service Account JSON"
+  type        = string
+  sensitive   = true
+}
