@@ -1,5 +1,4 @@
-# Handler Lambda Python
-def health(event, context):
+def handler(event, context):
     return {
         'statusCode': 200,
         'body': '{"status": "healthy"}'
