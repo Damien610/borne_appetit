@@ -1,8 +1,9 @@
 #!/bin/bash
 set -e
 
-OUTPUT_ZIP="$(dirname "$0")/src/lambda/shared_layer.zip"
-SRC_DIR="$(dirname "$0")/src"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+OUTPUT_ZIP="$SCRIPT_DIR/src/lambda/shared_layer.zip"
+SRC_DIR="$SCRIPT_DIR/src"
 
 echo "🔨 Building shared Lambda layer with Docker..."
 
@@ -40,6 +41,7 @@ docker run --rm \
 
 # Create zip
 echo "📦 Creating zip..."
+mkdir -p "$(dirname "$OUTPUT_ZIP")"
 cd $TEMP_DIR
 zip -r $OUTPUT_ZIP python -q
 

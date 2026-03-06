@@ -8,8 +8,10 @@ resource "null_resource" "build_shared_layer" {
   }
   
   provisioner "local-exec" {
-    command = "${path.module}/../../../build_shared_layer.sh"
-    working_dir = "${path.module}/../../.."
+    command = <<-EOT
+      cd ${path.module}/../../..
+      bash build_shared_layer.sh
+    EOT
   }
 }
 
