@@ -1,7 +1,7 @@
 data "archive_file" "create_wallet_class" {
   type        = "zip"
   source_file = "${path.module}/../../../src/lambda/wallet/post_wallet.py"
-  output_path = "${path.module}/../../../src/lambda/wallet/create_wallet_class.zip"
+  output_path = "${path.module}/.terraform/lambda_zips/create_wallet_class.zip"
 }
 
 resource "aws_lambda_function" "create_wallet_class" {

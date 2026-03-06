@@ -48,11 +48,21 @@ def handler(event, context):
             }
 
         # Récupérer le client depuis DynamoDB
-        customers_table = os.environ.get('CUSTOMERS_TABLE_NAME')
-        customer_repo = DynamoDBCustomerRepository(customers_table)
-
+        customer_repo = DynamoDBCustomerRepository()
+        
+        # Récupérer le client par loyalty_code (customer_id est en fait le loyalty_code)
+        customer = customer_repo.get_by_loyalty_code(customer_id)
+        
+        if not customer:
+            return {
+                'statusCode': 404,
+                'headers': {'Content-Type': 'application/json'},
+                'body': json.dumps({'error': 'Client introuvable'})
+            }
+        
         # Mettre à jour les points dans DynamoDB
-        # TODO: Implémenter customer_repo.update_points(customer_id, new_points)
+        customer.loyalty_points = new_points
+        customer_repo.update(customer)
 
         # Mettre à jour l'objet Google Wallet
         issuer_id = os.environ.get('GOOGLE_WALLET_ISSUER_ID')

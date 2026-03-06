@@ -1,7 +1,7 @@
 data "archive_file" "terminal_config" {
   type        = "zip"
   source_dir  = "${path.module}/../../../src/lambda/terminal/config"
-  output_path = "${path.module}/../../../src/lambda/terminal/config/terminal_config.zip"
+  output_path = "${path.module}/.terraform/lambda_zips/terminal_config.zip"
 }
 
 resource "aws_lambda_function" "terminal_config" {

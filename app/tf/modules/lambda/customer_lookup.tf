@@ -1,7 +1,7 @@
 data "archive_file" "customer_lookup" {
   type        = "zip"
   source_dir  = "${path.module}/../../../src/lambda/restaurant/uuid/get_costumer"
-  output_path = "${path.module}/../../../src/lambda/restaurant/uuid/get_costumer/customer_lookup.zip"
+  output_path = "${path.module}/.terraform/lambda_zips/customer_lookup.zip"
 }
 
 resource "aws_lambda_function" "customer_lookup" {

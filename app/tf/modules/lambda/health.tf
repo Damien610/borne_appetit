@@ -1,7 +1,7 @@
 data "archive_file" "health" {
   type        = "zip"
   source_dir  = "${path.module}/../../../src/lambda/health"
-  output_path = "${path.module}/../../../src/lambda/health/health.zip"
+  output_path = "${path.module}/.terraform/lambda_zips/health.zip"
 }
 
 resource "aws_lambda_function" "health" {

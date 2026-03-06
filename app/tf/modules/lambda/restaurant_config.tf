@@ -1,7 +1,7 @@
 data "archive_file" "restaurant_config" {
   type        = "zip"
   source_dir  = "${path.module}/../../../src/lambda/restaurant/uri/get_config"
-  output_path = "${path.module}/../../../src/lambda/restaurant/uri/get_config/restaurant_config.zip"
+  output_path = "${path.module}/.terraform/lambda_zips/restaurant_config.zip"
 }
 
 resource "aws_lambda_function" "restaurant_config" {

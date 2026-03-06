@@ -1,7 +1,7 @@
 data "archive_file" "send_loyalty_card" {
   type        = "zip"
   source_file = "${path.module}/../../../src/lambda/wallet/send_loyalty_card.py"
-  output_path = "${path.module}/../../../src/lambda/wallet/send_loyalty_card.zip"
+  output_path = "${path.module}/.terraform/lambda_zips/send_loyalty_card.zip"
 }
 
 resource "aws_lambda_function" "send_loyalty_card" {

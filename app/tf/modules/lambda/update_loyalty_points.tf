@@ -1,7 +1,7 @@
 data "archive_file" "update_loyalty_points" {
   type        = "zip"
   source_dir  = "${path.module}/../../../src/lambda/costumer/update_point"
-  output_path = "${path.module}/../../../src/lambda/costumer/update_point/update_loyalty_points.zip"
+  output_path = "${path.module}/.terraform/lambda_zips/update_loyalty_points.zip"
 }
 
 resource "aws_lambda_function" "update_loyalty_points" {

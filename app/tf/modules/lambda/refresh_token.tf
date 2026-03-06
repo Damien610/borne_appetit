@@ -1,7 +1,7 @@
 data "archive_file" "refresh_token" {
   type        = "zip"
   source_dir  = "${path.module}/../../../src/lambda/terminal/refresh_token"
-  output_path = "${path.module}/../../../src/lambda/terminal/refresh_token/refresh_token.zip"
+  output_path = "${path.module}/.terraform/lambda_zips/refresh_token.zip"
   
   excludes = [
     "requirements.txt",
