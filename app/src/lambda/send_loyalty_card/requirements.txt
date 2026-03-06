@@ -1,4 +1,0 @@
-PyJWT
-google-auth
-google-auth-oauthlib
-boto3

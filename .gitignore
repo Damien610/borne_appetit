@@ -6,6 +6,7 @@
 
 # Lambda
 *.zip
+!app/src/lambda/shared_layer.zip
 
 # IDE
 .idea/
