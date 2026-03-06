@@ -1,9 +1,17 @@
+data "archive_file" "terminal_config" {
+  type        = "zip"
+  source_dir  = "${path.module}/../../../src/lambda/terminal/config"
+  output_path = "${path.module}/../../../src/lambda/terminal/config/terminal_config.zip"
+}
+
 resource "aws_lambda_function" "terminal_config" {
-  filename      = "${path.module}/../../../src/lambda/terminal_config.zip"
+  filename      = data.archive_file.terminal_config.output_path
   function_name = "borne-appetit-terminal-config"
   role          = var.lambda_role_arn
-  handler       = "terminal_handler.handler"
+  handler       = "get_config.handler"
   runtime       = "python3.11"
+  
+  layers = [aws_lambda_layer_version.shared_layer.arn]
   
   environment {
     variables = {
@@ -11,13 +19,7 @@ resource "aws_lambda_function" "terminal_config" {
     }
   }
   
-  source_code_hash = data.archive_file.terminal_config.output_base64sha256
-}
-
-data "archive_file" "terminal_config" {
-  type        = "zip"
-  source_dir  = "${path.module}/../../../src"
-  output_path = "${path.module}/../../../src/lambda/terminal_config.zip"
+  source_code_hash = filebase64sha256("${path.module}/../../../src/lambda/terminal/config/get_config.py")
 }
 
 output "terminal_config_function_name" {
