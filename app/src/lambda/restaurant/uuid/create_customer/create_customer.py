@@ -46,7 +46,7 @@ def handler(event, context):
         }
 
         table_name = os.environ['CUSTOMERS_TABLE_NAME']
-        customer_repo = DynamoDBCustomerRepository(table_name)
+        customer_repo = DynamoDBCustomerRepository()
         customer_id = str(uuid.uuid4())
         loyalty_code = generate_loyalty_code()
         customer = Customer(restaurant_id=restaurant_id, customer_id=customer_id, email=email, loyalty_code=loyalty_code, name=name)

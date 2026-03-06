@@ -62,7 +62,7 @@ class DynamoDBCustomerRepository(CustomerRepository):
             'PK': f"RESTAURANT#{customer.restaurant_id}",
             'SK': f"CLIENT#{customer.customer_id}",
             'name': customer.name,
-            'emayil': customer.email,
+            'email': customer.email,
             'loyalty_code': customer.loyalty_code,
             'loyalty_points': customer.loyalty_points,
             'restaurant_email': f"{customer.restaurant_id}#{customer.email}"

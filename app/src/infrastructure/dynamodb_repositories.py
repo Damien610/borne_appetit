@@ -1,4 +1,5 @@
 import boto3
+import os
 import uuid
 from typing import Optional
 from domain.entities import Restaurant, Terminal
@@ -70,9 +71,9 @@ class DynamoDBTerminalRepository(TerminalRepository):
         )
 
 class DynamoDBCustomerRepository(CustomerRepository):
-    def __init__(self, table_name: str):
+    def __init__(self):
         self.dynamodb = boto3.resource('dynamodb')
-        self.table = self.dynamodb.Table(table_name)
+        self.table = self.dynamodb.Table(os.environ.get('CUSTOMERS_TABLE_NAME'))
     
     def get_by_loyalty_code(self, loyalty_code: str, restaurant_id: str = None) -> Optional[Customer]:
         response = self.table.query(
