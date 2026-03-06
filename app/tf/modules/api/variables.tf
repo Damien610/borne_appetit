@@ -97,3 +97,8 @@ variable "products_lookup_invoke_arn" {
   description = "ARN d'invocation de la fonction Lambda customer_lookup"
   type        = string
 }
+
+variable "create_customer_invoke_arn" {
+  description = "ARN d'invocation de la fonction Lambda create_customer"
+  type        = string
+}

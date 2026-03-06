@@ -47,6 +47,7 @@ module "api_gateway" {
   update_loyalty_points_invoke_arn    = module.lambda.update_loyalty_points_invoke_arn
   products_lookup_function_name       = module.lambda.products_lookup_function_name
   products_lookup_invoke_arn          = module.lambda.products_lookup_invoke_arn
+  create_customer_invoke_arn          = module.lambda.create_customer_invoke_arn
 }
 
 # Module Storage
