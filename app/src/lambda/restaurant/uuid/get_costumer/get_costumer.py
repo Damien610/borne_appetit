@@ -14,8 +14,7 @@ def handler(event, context):
             'body': json.dumps({'error': 'loyaltyCode required'})
         }
 
-    table_name = os.environ['CUSTOMERS_TABLE_NAME']
-    customer_repo = DynamoDBCustomerRepository(table_name)
+    customer_repo = DynamoDBCustomerRepository()
     use_case = GetCustomerByLoyaltyCodeUseCase(customer_repo, None)
 
     result = use_case.execute(restaurant_uuid, loyalty_code)
