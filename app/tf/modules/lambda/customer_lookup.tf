@@ -20,7 +20,7 @@ resource "aws_lambda_function" "customer_lookup" {
     }
   }
 
-  source_code_hash = filebase64sha256("${path.module}/../../../src/lambda/restaurant/uuid/get_costumer/get_costumer.py")
+  source_code_hash = data.archive_file.customer_lookup.output_base64sha256
 }
 
 resource "aws_lambda_permission" "customer_lookup_api" {
