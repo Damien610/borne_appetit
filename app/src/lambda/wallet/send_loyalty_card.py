@@ -37,8 +37,7 @@ def handler(event, context):
             }
 
         # Récupérer le client (pour test, on suppose qu'il existe déjà)
-        customers_table = os.environ.get('CUSTOMERS_TABLE_NAME')
-        customer_repo = DynamoDBCustomerRepository(customers_table)
+        customer_repo = DynamoDBCustomerRepository()
         
         # Pour ce test, on récupère le client existant par loyalty_code
         # TODO: implémenter get_by_email correctement avec le bon GSI
@@ -74,6 +73,10 @@ def handler(event, context):
                 "balance": {
                     "int": customer.loyalty_points or 0
                 }
+            },
+            "barcode": {
+                "type": "QR_CODE",
+                "value": customer.loyalty_code
             }
         }
 

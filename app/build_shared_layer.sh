@@ -25,11 +25,11 @@ trap "rm -rf $TEMP_DIR" EXIT
 
 mkdir -p $TEMP_DIR/python
 
-# Copy shared modules
+# Copy shared modules from layers (directly in python/)
 echo "📦 Copying shared modules..."
-cp -r $SRC_DIR/infrastructure $TEMP_DIR/python/
-cp -r $SRC_DIR/application $TEMP_DIR/python/
-cp -r $SRC_DIR/domain $TEMP_DIR/python/
+cp -r $SRC_DIR/layers/infrastructure $TEMP_DIR/python/
+cp -r $SRC_DIR/layers/application $TEMP_DIR/python/
+cp -r $SRC_DIR/layers/domain $TEMP_DIR/python/
 
 # Install pip dependencies with Docker (Linux binaries)
 echo "🐍 Installing Python dependencies (Linux binaries)..."

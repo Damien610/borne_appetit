@@ -1,9 +1,9 @@
 # Lambda Layer - Build automatique avec Docker
 resource "null_resource" "build_shared_layer" {
   triggers = {
-    infrastructure = filemd5("${path.module}/../../../src/infrastructure/dynamodb_repositories.py")
-    application    = filemd5("${path.module}/../../../src/application/use_cases.py")
-    domain         = filemd5("${path.module}/../../../src/domain/customer.py")
+    infrastructure = filemd5("${path.module}/../../../src/layers/infrastructure/dynamodb_repositories.py")
+    application    = filemd5("${path.module}/../../../src/layers/application/use_cases.py")
+    domain         = filemd5("${path.module}/../../../src/layers/domain/customer.py")
     requirements   = filemd5("${path.module}/../../../src/lambda/wallet/requirements.txt")
   }
   
