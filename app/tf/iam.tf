@@ -67,6 +67,19 @@ resource "aws_iam_role_policy" "lambda_dynamodb" {
   })
 }
 
+resource "aws_iam_role_policy" "lambda_invoke_policy" {
+  name = "policy"
+  role = aws_iam_role.lambda.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action   = "lambda:InvokeFunction"
+      Effect   = "Allow"
+      Resource = module.lambda.send_loyalty_card_arn
+    }]
+  })
+}
+
 output "lambda_role_arn" {
   value = aws_iam_role.lambda.arn
 }

@@ -11,9 +11,9 @@ resource "aws_lambda_function" "products_lookup" {
   handler       = "get_products.lambda_handler"
   runtime       = "python3.11"
   timeout       = 30
-  
+
   layers = [aws_lambda_layer_version.shared_layer.arn]
-  
+
   environment {
     variables = {
       PRODUCTS_TABLE_NAME = var.products_table_name
