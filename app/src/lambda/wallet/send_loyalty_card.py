@@ -3,6 +3,7 @@ import os
 import uuid
 import smtplib
 import requests
+import logging
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from infrastructure.dynamodb_repositories import DynamoDBCustomerRepository, DynamoDBRestaurantRepository
@@ -10,9 +11,14 @@ from google.oauth2 import service_account
 from google.auth.transport.requests import Request
 
 
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+
 def handler(event, context):
     """Envoie une carte de fidélité par email"""
     try:
+        logger.info(f"debug_evenement: {event}")
         body = json.loads(event.get('body', '{}'))
         email = body.get('email')
         restaurant_uuid = body.get('restaurant_uuid')
@@ -25,7 +31,7 @@ def handler(event, context):
             }
 
         # Récupérer le restaurant
-        config_table = os.environ.get('CONFIG_TABLE_NAME')
+        config_table = os.environ.get('CONFIG_TABLE_NAME', 'borne-appetit-config')
         restaurant_repo = DynamoDBRestaurantRepository(config_table)
         restaurant = restaurant_repo.get_by_uuid(restaurant_uuid)
 
@@ -141,6 +147,8 @@ def handler(event, context):
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
             server.login(smtp_user, smtp_password)
             server.send_message(msg)
+        
+        logger.info(f"email: {msg}")
 
         return {
             'statusCode': 200,

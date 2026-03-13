@@ -3,6 +3,8 @@ import os
 import uuid
 import secrets
 import logging
+import boto3
+import requests
 from infrastructure.dynamodb_repositories import DynamoDBCustomerRepository
 from application.use_cases import GetCustomerByLoyaltyCodeUseCase
 from domain.customer import Customer
@@ -10,6 +12,7 @@ from botocore.exceptions import ClientError
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
+client = boto3.client('lambda')
 
 def generate_loyalty_code() -> str:
     return ''.join(str(secrets.randbelow(10)) for _ in range(8))
@@ -57,7 +60,20 @@ def handler(event, context):
         created_customer = customer_repo.create(customer)
         logger.info(f"Client créé: {created_customer}")
 
-        return response(201, {})
+        # response_lambda = client.invoke(
+        #     FunctionName='borne-appetit-send-loyalty-card',
+        #     InvocationType='RequestResponse', # 'Event' pour asynchrone, 'RequestResponse' pour synchrone
+        #     Payload=json.dumps({"body":{'email': created_customer.email,"restaurant_uuid":restaurant_id}})
+        # )
+
+        response_lambda = requests.post(
+            'https://ubvobffhy8.execute-api.eu-west-1.amazonaws.com/send-loyalty-card',
+            json={
+                'email': created_customer.email,
+                'restaurant_uuid': restaurant_id
+            }
+        )
+        return response(201, {response_lambda.status_code})
     
     except ClientError as e:
             # erreur DynamoDB
