@@ -33,3 +33,6 @@ class CustomerRepository(ABC):
     @abstractmethod
     def update(self, customer: Customer) -> Customer:
         pass
+
+class ProductRepository(ABC):
+    pass
