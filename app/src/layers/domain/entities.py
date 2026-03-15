@@ -11,6 +11,8 @@ class Restaurant:
     welcome_image: Optional[str] = None
     primary_color: Optional[str] = None
     secondary_color: Optional[str] = None
+    primary_hexa: Optional[str] = None
+    secondary_hexa: Optional[str] = None
 
 @dataclass
 class Terminal:

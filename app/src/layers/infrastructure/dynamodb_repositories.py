@@ -24,7 +24,9 @@ class DynamoDBRestaurantRepository(RestaurantRepository):
             favicon=item.get('favicon'),
             welcome_image=item.get('welcome_image'),
             primary_color=item.get('primary_color'),
-            secondary_color=item.get('secondary_color')
+            secondary_color=item.get('secondary_color'),
+            primary_hexa=item.get('primary_hexa'),
+            secondary_hexa=item.get('secondary_hexa')
         )
     
     def get_by_uri(self, uri: str) -> Optional[Restaurant]:
@@ -45,7 +47,9 @@ class DynamoDBRestaurantRepository(RestaurantRepository):
             favicon=item.get('favicon'),
             welcome_image=item.get('welcome_image'),
             primary_color=item.get('primary_color'),
-            secondary_color=item.get('secondary_color')
+            secondary_color=item.get('secondary_color'),
+            primary_hexa=item.get('primary_hexa'),
+            secondary_hexa=item.get('secondary_hexa')
         )
 
 class DynamoDBTerminalRepository(TerminalRepository):
@@ -98,7 +102,25 @@ class DynamoDBCustomerRepository(CustomerRepository):
         return None
     
     def get_by_email(self, restaurant_id: str, email: str) -> Optional[Customer]:
-        pass
+        response = self.table.query(
+            IndexName='RestaurantEmailIndex',
+            KeyConditionExpression='restaurant_email = :re',
+            ExpressionAttributeValues={
+                ':re': f"{restaurant_id}#{email}"
+            }
+        )
+        items = response.get('Items', [])
+        if not items:
+            return None
+        item = items[0]
+        return Customer(
+            restaurant_id=item['PK'].replace('RESTAURANT#', ''),
+            customer_id=item['SK'].replace('CLIENT#', ''),
+            email=item['email'],
+            loyalty_code=item['loyalty_code'],
+            name=item.get('name'),
+            loyalty_points=int(item.get('loyalty_points', 0))
+        )
     
     def create(self, customer: Customer) -> Customer:
         """Crée un nouveau client"""       

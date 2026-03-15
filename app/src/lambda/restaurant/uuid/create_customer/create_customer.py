@@ -60,20 +60,20 @@ def handler(event, context):
         created_customer = customer_repo.create(customer)
         logger.info(f"Client créé: {created_customer}")
 
-        # response_lambda = client.invoke(
-        #     FunctionName='borne-appetit-send-loyalty-card',
-        #     InvocationType='RequestResponse', # 'Event' pour asynchrone, 'RequestResponse' pour synchrone
-        #     Payload=json.dumps({"body":{'email': created_customer.email,"restaurant_uuid":restaurant_id}})
-        # )
-
-        response_lambda = requests.post(
-            'https://ubvobffhy8.execute-api.eu-west-1.amazonaws.com/send-loyalty-card',
-            json={
-                'email': created_customer.email,
-                'restaurant_uuid': restaurant_id
-            }
+        response_lambda = client.invoke(
+             FunctionName='borne-appetit-send-loyalty-card',
+             InvocationType='RequestResponse', # 'Event' pour asynchrone, 'RequestResponse' pour synchrone
+             Payload=json.dumps({"body": json.dumps({'email': created_customer.email, 'restaurant_uuid': restaurant_id})})
         )
-        return response(201, {response_lambda.status_code})
+
+#        response_lambda = requests.post(
+#            'https://ubvobffhy8.execute-api.eu-west-1.amazonaws.com/send-loyalty-card',
+#            json={
+#                'email': created_customer.email,
+#                'restaurant_uuid': restaurant_id
+#            }
+#        )
+        return response(201, {"message": f"A loyalty card have been send by email: {created_customer.email}"})
     
     except ClientError as e:
             # erreur DynamoDB

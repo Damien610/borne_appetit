@@ -32,32 +32,35 @@ def handler(event, context):
 
         # Récupérer le restaurant
         config_table = os.environ.get('CONFIG_TABLE_NAME', 'borne-appetit-config')
+        logger.info(f"[STEP 1] Recherche restaurant {restaurant_uuid} dans table {config_table}")
         restaurant_repo = DynamoDBRestaurantRepository(config_table)
         restaurant = restaurant_repo.get_by_uuid(restaurant_uuid)
 
         if not restaurant:
+            logger.error(f"[STEP 1] Restaurant {restaurant_uuid} introuvable")
             return {
                 'statusCode': 404,
                 'headers': {'Content-Type': 'application/json'},
                 'body': json.dumps({'error': 'Restaurant introuvable'})
             }
+        logger.info(f"[STEP 1] Restaurant trouvé: {restaurant.name}")
 
-        # Récupérer le client (pour test, on suppose qu'il existe déjà)
         customer_repo = DynamoDBCustomerRepository()
-        
-        # Pour ce test, on récupère le client existant par loyalty_code
-        # TODO: implémenter get_by_email correctement avec le bon GSI
-        customer = customer_repo.get_by_loyalty_code('9BP24X4Z', restaurant_uuid)
+        logger.info(f"[STEP 2] Recherche customer par email {email} pour restaurant {restaurant_uuid}")
+        customer = customer_repo.get_by_email(restaurant_uuid, email)
 
         if not customer:
+            logger.error(f"[STEP 2] Customer introuvable pour email={email}, restaurant={restaurant_uuid}")
             return {
                 'statusCode': 404,
                 'headers': {'Content-Type': 'application/json'},
-                'body': json.dumps({'error': 'Client introuvable (test avec loyalty_code 9BP24X4Z)'})
+                'body': json.dumps({'error': 'Client introuvable'})
             }
+        logger.info(f"[STEP 2] Customer trouvé: loyalty_code={customer.loyalty_code}, points={customer.loyalty_points}")
 
         # Créer l'objet Google Wallet
         issuer_id = os.environ.get('GOOGLE_WALLET_ISSUER_ID')
+        logger.info(f"[STEP 3] Google Wallet issuer_id={issuer_id}")
         service_account_json = json.loads(os.environ.get('GOOGLE_WALLET_SERVICE_ACCOUNT'))
 
         credentials = service_account.Credentials.from_service_account_info(
@@ -87,19 +90,22 @@ def handler(event, context):
         }
 
         # Créer ou mettre à jour l'objet via REST API
+        logger.info(f"[STEP 4] POST loyaltyObject, class_id={class_id}, object_id={object_id}")
         response = requests.post(
             "https://walletobjects.googleapis.com/walletobjects/v1/loyaltyObject",
             headers={"Authorization": f"Bearer {credentials.token}"},
             json=loyalty_object
         )
+        logger.info(f"[STEP 4] Wallet API response: status={response.status_code}, body={response.text[:500]}")
 
         if response.status_code == 409:
             # Objet existe déjà, le mettre à jour
-            requests.put(
+            put_resp = requests.put(
                 f"https://walletobjects.googleapis.com/walletobjects/v1/loyaltyObject/{object_id}",
                 headers={"Authorization": f"Bearer {credentials.token}"},
                 json=loyalty_object
             )
+            logger.info(f"[STEP 4] Wallet PUT response: status={put_resp.status_code}")
 
         # Créer un JWT signé pour le lien "Add to Google Wallet"
         import jwt as pyjwt
@@ -125,6 +131,7 @@ def handler(event, context):
         # Envoyer l'email
         smtp_user = os.environ.get('SMTP_USER')
         smtp_password = os.environ.get('SMTP_PASSWORD')
+        logger.info(f"[STEP 5] Envoi email à {email}, smtp_user={smtp_user}, smtp_password_set={bool(smtp_password)}")
 
         msg = MIMEMultipart('alternative')
         msg['Subject'] = f"Votre carte de fidélité {restaurant.name}"
@@ -148,7 +155,7 @@ def handler(event, context):
             server.login(smtp_user, smtp_password)
             server.send_message(msg)
         
-        logger.info(f"email: {msg}")
+        logger.info(f"[STEP 5] Email envoyé avec succès à {email}")
 
         return {
             'statusCode': 200,
@@ -161,6 +168,7 @@ def handler(event, context):
         }
 
     except Exception as e:
+        logger.error(f"[ERROR] {type(e).__name__}: {str(e)}", exc_info=True)
         return {
             'statusCode': 500,
             'headers': {'Content-Type': 'application/json'},

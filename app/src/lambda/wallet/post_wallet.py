@@ -45,21 +45,18 @@ def lambda_handler(event, context):
         # Créer la classe
         class_id = f"{issuer_id}.{restaurant.uri_name}_loyalty_v2"
 
-        # Conversion couleur oklch -> hex (simplifié)
-        hex_color = "#1a73e8"
-        if restaurant.primary_color and '136.559' in restaurant.primary_color:
-            hex_color = "#5cb85c"
+        hex_bg = restaurant.primary_hexa or "#1a73e8"
 
         loyalty_class = {
             "id": class_id,
             "issuerName": restaurant.name,
-            "programName": f"Carte de fidélité {restaurant.name}",
+            "programName": restaurant.name,
             "programLogo": {
                 "sourceUri": {
                     "uri": restaurant.favicon
                 }
             },
-            "hexBackgroundColor": hex_color,
+            "hexBackgroundColor": hex_bg,
             "reviewStatus": "UNDER_REVIEW"
         }
 
@@ -75,43 +72,35 @@ def lambda_handler(event, context):
                 'statusCode': 200,
                 'headers': {'Content-Type': 'application/json'},
                 'body': json.dumps({
-                    'message': 'Classe créée avec succès',
-                    'class_id': class_id
+                    'message': 'Classe créée',
+                    'class_id': class_id,
+                    'google_response': response.json()
                 })
             }
         elif response.status_code == 409:
-            # Classe existe déjà, la mettre à jour
+            # Classe existe déjà, la mettre à jour via PUT
             response = requests.put(
                 f"https://walletobjects.googleapis.com/walletobjects/v1/loyaltyClass/{class_id}",
                 headers={"Authorization": f"Bearer {credentials.token}"},
                 json=loyalty_class
             )
 
-            if response.status_code == 200:
-                return {
-                    'statusCode': 200,
-                    'headers': {'Content-Type': 'application/json'},
-                    'body': json.dumps({
-                        'message': 'Classe mise à jour avec succès',
-                        'class_id': class_id
-                    })
-                }
-            else:
-                return {
-                    'statusCode': response.status_code,
-                    'headers': {'Content-Type': 'application/json'},
-                    'body': json.dumps({
-                        'error': 'Erreur mise à jour classe',
-                        'details': response.text
-                    })
-                }
+            return {
+                'statusCode': response.status_code,
+                'headers': {'Content-Type': 'application/json'},
+                'body': json.dumps({
+                    'message': 'Classe mise à jour' if response.status_code == 200 else 'Erreur mise à jour',
+                    'class_id': class_id,
+                    'google_response': response.json()
+                })
+            }
         else:
             return {
                 'statusCode': response.status_code,
                 'headers': {'Content-Type': 'application/json'},
                 'body': json.dumps({
                     'error': 'Erreur création classe',
-                    'details': response.text
+                    'google_response': response.json()
                 })
             }
 
