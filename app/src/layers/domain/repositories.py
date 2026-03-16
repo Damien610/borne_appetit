@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Optional
+from typing import Optional, List
 from domain.entities import Restaurant, Terminal
 from domain.customer import Customer
 
@@ -10,6 +10,10 @@ class RestaurantRepository(ABC):
     
     @abstractmethod
     def get_by_uri(self, uri: str) -> Optional[Restaurant]:
+        pass
+
+    @abstractmethod
+    def get_styles(self, restaurant_uuid: str) -> List[dict]:
         pass
 
 class TerminalRepository(ABC):

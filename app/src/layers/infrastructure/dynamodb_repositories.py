@@ -52,6 +52,16 @@ class DynamoDBRestaurantRepository(RestaurantRepository):
             secondary_hexa=item.get('secondary_hexa')
         )
 
+    def get_styles(self, restaurant_uuid: str) -> list:
+        response = self.table.query(
+            KeyConditionExpression='PK = :pk AND begins_with(SK, :sk)',
+            ExpressionAttributeValues={':pk': f'RESTAURANT#{restaurant_uuid}', ':sk': 'STYLE#'}
+        )
+        return [
+            {'name': item['name'], 'uuid': item['SK'].replace('STYLE#', ''), 'style_value': item['style_value']}
+            for item in response.get('Items', [])
+        ]
+
 class DynamoDBTerminalRepository(TerminalRepository):
     def __init__(self, table_name: str):
         self.dynamodb = boto3.resource('dynamodb')

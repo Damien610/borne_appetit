@@ -48,15 +48,16 @@ def handler(event, context):
                 'body': json.dumps({'error': 'email required'})
         }
 
-        table_name = os.environ['CUSTOMERS_TABLE_NAME']
         customer_repo = DynamoDBCustomerRepository()
+
+        existing = customer_repo.get_by_email(restaurant_id, email)
+        if existing:
+            return response(409, {"message": "Un client avec cet email existe déjà"})
+
         customer_id = str(uuid.uuid4())
         loyalty_code = generate_loyalty_code()
         customer = Customer(restaurant_id=restaurant_id, customer_id=customer_id, email=email, loyalty_code=loyalty_code, name=name)
-        logger.info(f"Objet client: {customer}")
-        logger.info(f"table_name: {table_name}")
 
-        # Création du client
         created_customer = customer_repo.create(customer)
         logger.info(f"Client créé: {created_customer}")
 

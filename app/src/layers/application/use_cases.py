@@ -8,15 +8,19 @@ class GetRestaurantConfigUseCase:
         restaurant = self.repository.get_by_uri(uri)
         if not restaurant:
             return None
+        
+        styles = self.repository.get_styles(restaurant.uuid)
+        
         return {
-            'uuid': restaurant.uuid,
-            'name': restaurant.name,
-            'uri_name': restaurant.uri_name,
-            'logo': restaurant.logo,
-            'favicon': restaurant.favicon,
-            'welcome_image': restaurant.welcome_image,
-            'primary_color': restaurant.primary_color,
-            'secondary_color': restaurant.secondary_color
+            'restaurant': {
+                'name': restaurant.name,
+                'uuid': restaurant.uuid,
+                'uri_name': restaurant.uri_name,
+                'logo': restaurant.logo,
+                'favicon': restaurant.favicon,
+                'welcome_image': restaurant.welcome_image
+            },
+            'styles': styles
         }
 
 class GetTerminalConfigUseCase:
@@ -33,6 +37,8 @@ class GetTerminalConfigUseCase:
         if not restaurant:
             return None
         
+        styles = self.restaurant_repo.get_styles(restaurant.uuid)
+        
         return {
             'terminal': {
                 'uuid': terminal.uuid,
@@ -40,14 +46,14 @@ class GetTerminalConfigUseCase:
                 'location': terminal.location
             },
             'restaurant': {
-                'uuid': restaurant.uuid,
                 'name': restaurant.name,
+                'uuid': restaurant.uuid,
+                'uri_name': restaurant.uri_name,
                 'logo': restaurant.logo,
                 'favicon': restaurant.favicon,
-                'welcome_image': restaurant.welcome_image,
-                'primary_color': restaurant.primary_color,
-                'secondary_color': restaurant.secondary_color
-            }
+                'welcome_image': restaurant.welcome_image
+            },
+            'styles': styles
         }
 
 class GetCustomerByLoyaltyCodeUseCase:
