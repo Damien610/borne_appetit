@@ -62,6 +62,15 @@ resource "aws_iam_role_policy" "lambda_dynamodb" {
           module.database.products_table_arn,
           "${module.database.products_table_arn}/index/*"
         ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "dynamodb:PutItem"
+        ]
+        Resource = [
+          module.database.order_table_arn
+        ]
       }
     ]
   })

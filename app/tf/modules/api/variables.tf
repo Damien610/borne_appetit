@@ -102,3 +102,8 @@ variable "create_customer_invoke_arn" {
   description = "ARN d'invocation de la fonction Lambda create_customer"
   type        = string
 }
+
+variable "create_order_invoke_arn" {
+  description = "ARN d'invocation de la fonction Lambda create_order"
+  type        = string
+}

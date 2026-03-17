@@ -14,6 +14,7 @@ module "lambda" {
   config_table_name         = module.database.config_table_name
   customers_table_name      = module.database.customers_table_name
   products_table_name       = module.database.products_table_name
+  order_table_name          = module.database.order_table_name
   smtp_user                 = var.smtp_user
   smtp_password             = var.smtp_password
   jwt_secret                = var.jwt_secret
@@ -48,6 +49,7 @@ module "api_gateway" {
   products_lookup_function_name       = module.lambda.products_lookup_function_name
   products_lookup_invoke_arn          = module.lambda.products_lookup_invoke_arn
   create_customer_invoke_arn          = module.lambda.create_customer_invoke_arn
+  create_order_invoke_arn             = module.lambda.create_order_invoke_arn
 }
 
 # Module Storage

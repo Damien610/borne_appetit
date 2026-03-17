@@ -58,3 +58,8 @@ variable "products_table_name" {
   description = "Nom de la table DynamoDB products"
   type        = string
 }
+
+variable "order_table_name" {
+  description = "Nom de la table DynamoDB order"
+  type        = string
+}
